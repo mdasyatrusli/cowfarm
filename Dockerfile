@@ -13,11 +13,15 @@ RUN apk add --no-cache \
     libpq-dev \
     oniguruma-dev \
     libzip-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
     nodejs \
     npm
 
 # --- PHP extensions ---
-RUN docker-php-ext-install pdo pdo_pgsql mbstring zip pcntl
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_pgsql mbstring zip pcntl gd
 
 # --- Composer ---
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
